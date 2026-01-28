@@ -17,3 +17,41 @@
 </div>
 
 </div>
+
+## Building from Source
+
+### Prerequisites
+
+- macOS 10.13+
+- Xcode 12+
+- [CocoaPods](https://cocoapods.org/)
+
+### Build
+
+```bash
+# Install dependencies
+pod install
+
+# Build Debug version
+xcodebuild -workspace alt-tab-macos.xcworkspace -scheme Debug -configuration Debug build
+
+# Build Release version
+xcodebuild -workspace alt-tab-macos.xcworkspace -scheme Release -configuration Release build
+```
+
+### Quick build check
+
+```bash
+xcodebuild -workspace alt-tab-macos.xcworkspace -scheme Debug -configuration Debug build 2>&1 | grep -E "(error:|BUILD)"
+```
+
+### Run
+
+```bash
+# Open the built app (Debug)
+open ~/Library/Developer/Xcode/DerivedData/alt-tab-macos-*/Build/Products/Debug/AltTab.app
+
+# Or use Xcode to build and run
+open alt-tab-macos.xcworkspace
+# Then press Cmd+R in Xcode
+```

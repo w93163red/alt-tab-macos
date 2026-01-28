@@ -49,11 +49,21 @@ class TaskbarItemView: NSView {
         }
         trackingArea = NSTrackingArea(
             rect: bounds,
-            options: [.mouseEnteredAndExited, .activeAlways],
+            options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect],
             owner: self,
             userInfo: nil
         )
         addTrackingArea(trackingArea!)
+    }
+
+    override var acceptsFirstResponder: Bool { true }
+
+    // Ensure tracking areas are set up when the view is added to window
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        if window != nil {
+            updateTrackingAreas()
+        }
     }
 
     override func layout() {

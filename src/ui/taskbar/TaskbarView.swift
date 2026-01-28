@@ -83,13 +83,21 @@ class TaskbarView: NSView {
             if index < windows.count {
                 let window = windows[index]
                 itemView.updateContent(window)
-                itemView.isHidden = false
 
                 // calculate width based on title
                 let titleWidth = itemView.preferredWidth()
                 let itemWidth = min(maxItemWidth, max(minItemWidth, titleWidth))
 
-                itemView.frame = NSRect(x: currentX, y: itemY, width: itemWidth, height: itemHeight)
+                let newFrame = NSRect(x: currentX, y: itemY, width: itemWidth, height: itemHeight)
+                let frameChanged = itemView.frame != newFrame
+                itemView.frame = newFrame
+                itemView.isHidden = false
+
+                // ensure tracking areas are updated when frame changes or view becomes visible
+                if frameChanged {
+                    itemView.updateTrackingAreas()
+                }
+
                 currentX += itemWidth + itemSpacing
             } else {
                 itemView.isHidden = true

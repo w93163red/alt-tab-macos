@@ -16,6 +16,8 @@ class TaskbarPanel: NSPanel {
         titleVisibility = .hidden
         backgroundColor = .clear
         animationBehavior = .none
+        // Accept mouse events even when not key window
+        acceptsMouseMovedEvents = true
 
         taskbarView = TaskbarView()
         contentView = taskbarView
@@ -47,4 +49,7 @@ class TaskbarPanel: NSPanel {
     func updateContents(_ windows: [Window]) {
         taskbarView.updateItems(windows)
     }
+
+    // Allow the panel to receive mouse events without becoming key
+    override var canBecomeKey: Bool { true }
 }
