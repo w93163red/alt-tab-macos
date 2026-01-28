@@ -6,6 +6,8 @@
 
 **AltTab** brings the power of Windows alt-tab to macOS
 
+> **Note:** This is a personal fork that adds a Windows-style taskbar feature. For the official AltTab, visit [lwouis/alt-tab-macos](https://github.com/lwouis/alt-tab-macos).
+
 [Official website](https://alt-tab-macos.netlify.app/)<br/><sub>14K stars</sub> | [Download](https://github.com/lwouis/alt-tab-macos/releases/download/v8.3.3/AltTab-8.3.3.zip)<br/><sub>6.6M downloads</sub>
 -|-
 
@@ -23,6 +25,9 @@
 ### Windows-style Taskbar (New!)
 
 This fork adds a **persistent Windows-style taskbar** at the bottom of the screen:
+
+[![Taskbar](docs/public/demo/taskbar.png)](docs/public/demo/taskbar.png)
+[![Taskbar Preview](docs/public/demo/taskbar-preview.png)](docs/public/demo/taskbar-preview.png)
 
 - Shows all open windows with app icons and titles
 - Click to focus any window instantly
