@@ -128,8 +128,8 @@ class AccessibilityEvents {
 
     private static func windowResizedOrMoved(_ window: Window) {
         window.updateSpacesAndScreen()
-        // adjust window if it's maximized to leave room for taskbar
-        TaskbarManager.shared.adjustWindowIfMaximized(window)
+        // shrink window if it overlaps the taskbar
+        TaskbarManager.shared.adjustWindowIfNeeded(window)
         App.app.refreshOpenUi([window], .refreshUiAfterExternalEvent)
     }
 }

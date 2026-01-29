@@ -7,8 +7,8 @@ class TaskbarSettingsSheet: SheetWindow {
         // Size settings
         let heightSlider = LabelAndControl.makeLabelWithSlider("", "taskbarHeight", 24, 64, 9, true, "px", width: 180, extraAction: { _ in
             TaskbarManager.shared.repositionAll()
-            // re-adjust maximized windows when taskbar height changes
-            TaskbarManager.shared.adjustAllMaximizedWindows()
+            // re-adjust overlapping windows when taskbar height changes
+            TaskbarManager.shared.adjustAllWindows()
         })
         let heightIndicator = heightSlider[2] as! NSTextField
         heightIndicator.alignment = .right

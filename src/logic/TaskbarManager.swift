@@ -11,7 +11,7 @@ class TaskbarManager {
         createPanelsForAllScreens()
         updateContents()
         // adjust any already-maximized windows to leave room for taskbar
-        adjustAllMaximizedWindows()
+        adjustAllWindows()
     }
 
     func disable() {
@@ -115,18 +115,19 @@ class TaskbarManager {
         }
     }
 
-    /// Adjusts all existing maximized windows to leave room for the taskbar
+    /// Adjusts all windows that overlap with the taskbar
     /// Called when taskbar is enabled or taskbar height changes
-    func adjustAllMaximizedWindows() {
+    func adjustAllWindows() {
         guard isEnabled else { return }
         for window in Windows.list {
-            adjustWindowIfMaximized(window)
+            adjustWindowIfNeeded(window)
         }
     }
 
-    /// Adjusts a window if it's maximized to leave room for the taskbar
+    /// Shrinks a window if its bottom edge overlaps the taskbar area
+    /// Handles maximized windows, tiled windows (e.g. left/right half in macOS Sequoia), etc.
     /// Called when a window is resized or moved
-    func adjustWindowIfMaximized(_ window: Window) {
+    func adjustWindowIfNeeded(_ window: Window) {
         guard isEnabled else { return }
         guard !window.isWindowlessApp else { return }
         guard !window.isFullscreen else { return } // don't adjust actual fullscreen windows
@@ -142,35 +143,29 @@ class TaskbarManager {
 
         // convert screen coordinates (origin at bottom-left) to window coordinates (origin at top-left)
         let screenTopLeftY = NSMaxY(NSScreen.screens[0].frame) - NSMaxY(visibleFrame)
-        let expectedWindowY = screenTopLeftY
-        let expectedWindowHeight = visibleFrame.height
+        let taskbarTop = screenTopLeftY + visibleFrame.height - taskbarHeight
+        let windowBottom = position.y + size.height
 
-        // check if window fills the visible frame (is "maximized")
-        // allow small tolerance for rounding
         let tolerance: CGFloat = 2
-        let isMaximizedWidth = abs(position.x - visibleFrame.minX) < tolerance && abs(size.width - visibleFrame.width) < tolerance
-        let isMaximizedHeight = abs(position.y - expectedWindowY) < tolerance && abs(size.height - expectedWindowHeight) < tolerance
 
-        // also check if window is already adjusted for taskbar (to avoid unnecessary operations)
-        let adjustedHeight = expectedWindowHeight - taskbarHeight
-        let isAlreadyAdjusted = abs(size.height - adjustedHeight) < tolerance
+        // check if the window's bottom edge extends into the taskbar area
+        let overlapsTaskbar = windowBottom > taskbarTop + tolerance
+        // check if already adjusted (bottom edge is at taskbar top)
+        let isAlreadyAdjusted = abs(windowBottom - taskbarTop) <= tolerance
 
-        if isMaximizedWidth && isMaximizedHeight && !isAlreadyAdjusted {
-            // window is maximized - adjust to leave room for taskbar
-            let newHeight = expectedWindowHeight - taskbarHeight
-            let newY = expectedWindowY // keep top position the same
+        if overlapsTaskbar && !isAlreadyAdjusted {
+            // shrink window so its bottom edge sits at the top of the taskbar
+            let newHeight = taskbarTop - position.y
 
-            // only adjust if the new size is different
-            if abs(size.height - newHeight) > tolerance {
+            if newHeight > 0 && abs(size.height - newHeight) > tolerance {
                 BackgroundWork.accessibilityCommandsQueue.addOperation {
-                    // set new size
                     var newSize = CGSize(width: size.width, height: newHeight)
                     if let sizeValue = AXValueCreate(.cgSize, &newSize) {
                         try? axUiElement.setAttribute(kAXSizeAttribute, sizeValue)
                     }
 
-                    // set position (in case it shifted)
-                    var newPosition = CGPoint(x: position.x, y: newY)
+                    // re-set position in case resizing shifted it
+                    var newPosition = CGPoint(x: position.x, y: position.y)
                     if let posValue = AXValueCreate(.cgPoint, &newPosition) {
                         try? axUiElement.setAttribute(kAXPositionAttribute, posValue)
                     }
