@@ -155,4 +155,18 @@ class TaskbarItemView: NSView {
         guard bounds.contains(convert(event.locationInWindow, from: nil)) else { return }
         window_?.focus()
     }
+
+    override func rightMouseUp(with event: NSEvent) {
+        guard bounds.contains(convert(event.locationInWindow, from: nil)),
+              window_ != nil else { return }
+        let menu = NSMenu()
+        let closeItem = NSMenuItem(title: NSLocalizedString("Close", comment: ""), action: #selector(closeWindow), keyEquivalent: "")
+        closeItem.target = self
+        menu.addItem(closeItem)
+        NSMenu.popUpContextMenu(menu, with: event, for: self)
+    }
+
+    @objc private func closeWindow() {
+        window_?.close()
+    }
 }
