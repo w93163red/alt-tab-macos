@@ -2,32 +2,19 @@
 
 # AltTab
 
-[![Screenshot](docs/public/demo/frontpage.jpg)](docs/public/demo/frontpage.jpg)
+[![Screenshot](screenshot.png)](screenshot.png)
 
 **AltTab** brings the power of Windows alt-tab to macOS
 
 > **Note:** This is a personal fork that adds a Windows-style taskbar feature. For the official AltTab, visit [lwouis/alt-tab-macos](https://github.com/lwouis/alt-tab-macos).
 
-[Official website](https://alt-tab-macos.netlify.app/)<br/><sub>14K stars</sub> | [Download](https://github.com/lwouis/alt-tab-macos/releases/download/v8.3.3/AltTab-8.3.3.zip)<br/><sub>6.6M downloads</sub>
--|-
-
-<div align="right">
-  <p>Project supported by</p>
-  <a href="https://jb.gg/OpenSource">
-    <img src="docs/public/demo/jetbrains.svg" alt="Jetbrains" width="149" height="32">
-  </a>
-</div>
-
 </div>
 
 ## Features
 
-### Windows-style Taskbar (New!)
+### Windows-style Taskbar
 
 This fork adds a **persistent Windows-style taskbar** at the bottom of the screen:
-
-[![Taskbar](docs/public/demo/taskbar.png)](docs/public/demo/taskbar.png)
-[![Taskbar Preview](docs/public/demo/taskbar-preview.png)](docs/public/demo/taskbar-preview.png)
 
 - Shows all open windows with app icons and titles
 - Click to focus any window instantly
@@ -38,8 +25,6 @@ This fork adds a **persistent Windows-style taskbar** at the bottom of the scree
 - Fully customizable: height, icon size, font size, and more
 
 Configure in **Preferences → Appearance → Taskbar**.
-
-See [docs/taskbar.md](docs/taskbar.md) for technical design details.
 
 ## Building from Source
 
@@ -60,12 +45,6 @@ xcodebuild -workspace alt-tab-macos.xcworkspace -scheme Debug -configuration Deb
 
 # Build Release version
 xcodebuild -workspace alt-tab-macos.xcworkspace -scheme Release -configuration Release build
-```
-
-### Quick build check
-
-```bash
-xcodebuild -workspace alt-tab-macos.xcworkspace -scheme Debug -configuration Debug build 2>&1 | grep -E "(error:|BUILD)"
 ```
 
 ### Run
