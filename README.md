@@ -1,10 +1,10 @@
 <div align = center>
 
-# AltTab
+# alt-tab-taskbar
 
 [![Screenshot](screenshot.png)](screenshot.png)
 
-**AltTab** brings the power of Windows alt-tab to macOS
+**alt-tab-taskbar** brings the power of Windows alt-tab to macOS
 
 > **Note:** This is a personal fork that adds a Windows-style taskbar feature. For the official AltTab, visit [lwouis/alt-tab-macos](https://github.com/lwouis/alt-tab-macos).
 
