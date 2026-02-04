@@ -66,8 +66,21 @@ class TaskbarManager {
     func updateContents() {
         guard isEnabled else { return }
         for (screenUuid, panel) in taskbarPanels {
-            let filteredWindows = filterWindowsForTaskbar(screenUuid: screenUuid)
-            panel.updateContents(filteredWindows)
+            if hasFullscreenWindow(on: screenUuid) {
+                panel.orderOut(nil)
+            } else {
+                panel.orderFront(nil)
+                let filteredWindows = filterWindowsForTaskbar(screenUuid: screenUuid)
+                panel.updateContents(filteredWindows)
+            }
+        }
+    }
+
+    private func hasFullscreenWindow(on screenUuid: ScreenUuid) -> Bool {
+        return Windows.list.contains { window in
+            !window.isWindowlessApp &&
+                window.screenId == screenUuid &&
+                window.isFullscreen
         }
     }
 
